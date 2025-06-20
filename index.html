@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buchupalli Gangapavithra | Deep Learning Engineer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- INLINE CSS -->
+    <style>
+        /* General Setup */
+        :root {
+            --bg-color: #f4f4f4; --primary-color: #0052ff; --text-color: #111111;
+            --text-secondary-color: #555555; --border-color: #e0e0e0; --card-bg-color: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; text-decoration: none; border: none; outline: none; scroll-behavior: smooth; }
+        
+        html { font-size: 62.5%; cursor: none; }
+        body { background: var(--bg-color); color: var(--text-color); font-family: 'Inter', sans-serif; cursor: none; }
+        body.loading { overflow: hidden; } /* Prevent scroll during preloader */
+
+        h1, h2, h3, h4 { font-weight: 700; color: var(--text-color); }
+        p { color: var(--text-secondary-color); font-size: 1.6rem; line-height: 1.7; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color); z-index: 2000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease;
+        }
+        .preloader .spinner {
+            width: 50px; height: 50px; border: 4px solid var(--border-color);
+            border-top-color: var(--primary-color); border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-circle {
+            pointer-events: none; position: fixed; top: 0; left: 0; border-radius: 50%;
+            z-index: 9999; opacity: 0; transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--primary-color); }
+        .cursor-circle {
+            width: 40px; height: 40px; border: 2px solid var(--primary-color);
+            transition: transform 0.25s ease-out, width 0.4s ease, height 0.4s ease, border-width 0.4s ease, background-color 0.4s ease;
+        }
+        body.cursor-hovered .cursor-circle { transform: translate(-50%,-50%) scale(1.5); background-color: rgba(0, 82, 255, 0.1); border-width: 1.5px; }
+
+        /* Header */
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 2rem 0;
+            background: rgba(244, 244, 244, 0.8); backdrop-filter: blur(10px); z-index: 100;
+            border-bottom: 1px solid transparent; transition: border-color 0.3s ease;
+        }
+        .header.scrolled { border-bottom-color: var(--border-color); }
+        .header .container { display: flex; justify-content: space-between; align-items: center; }
+        .header .logo { font-size: 2rem; font-weight: 800; }
+        .header .btn {
+            font-size: 1.4rem; padding: 1rem 2rem; border-radius: 5px; background: var(--primary-color);
+            color: #fff; transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .header .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 82, 255, 0.3); }
+
+        /* Hero Section */
+        .hero { padding: 15rem 0 10rem 0; text-align: center; }
+        .hero .profile-img {
+            width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;
+            border: 4px solid var(--card-bg-color); box-shadow: 0 0 0 4px var(--primary-color), 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .hero h1 { font-size: 5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        /* Animated H1 styling */
+        .hero h1 .char { display: inline-block; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        
+        .hero .subtitle { font-size: 2rem; color: var(--primary-color); margin-bottom: 2.5rem; font-weight: 500; }
+        .hero .summary { max-width: 70ch; margin: 0 auto 3rem auto; }
+        .hero .social-links a { font-size: 2.4rem; color: var(--text-secondary-color); margin: 0 1.5rem; transition: color 0.3s, transform 0.3s; }
+        .hero .social-links a:hover { color: var(--primary-color); transform: translateY(-3px); }
+
+        /* Section Styling */
+        .section { padding: 8rem 0; }
+        .section-title { font-size: 3.5rem; margin-bottom: 5rem; text-align: center; }
+        
+        /* Card Styling */
+        .card {
+            background: var(--card-bg-color); border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 3rem; box-shadow: 4px 4px 0px #d1d1d1;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .card:hover { transform: translate(-6px, -6px) rotate(-1deg); box-shadow: 12px 12px 0px var(--primary-color); }
+        .skills-grid .card:hover, .list-card:hover { box-shadow: 10px 10px 0px var(--primary-color); }
+
+
+        /* Skills Section */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; }
+        .skills-grid .card h3 { font-size: 2rem; margin-bottom: 1.5rem; }
+        .skills-grid .card ul { list-style: none; }
+        .skills-grid .card li { font-size: 1.5rem; color: var(--text-secondary-color); margin-bottom: 1rem; }
+
+        /* Projects Section */
+        .project-list { display: flex; flex-direction: column; gap: 4rem; }
+        .project-card h3 { font-size: 2.2rem; margin-bottom: 1rem; color: var(--primary-color); }
+        .project-card ul { padding-left: 2rem; }
+        .project-card li { margin-bottom: 0.8rem; }
+        
+        /* Certifications & Education Section */
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; }
+        .list-card h3 { font-size: 2rem; margin-bottom: 1.5rem; }
+        .list-card .item { padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+        .list-card .item:last-child { border-bottom: none; margin-bottom: 0; }
+        .list-card .item-title { font-size: 1.6rem; font-weight: 500; }
+        .list-card .item-subtitle { font-size: 1.4rem; color: var(--text-secondary-color); }
+
+        /* Footer */
+        .footer { text-align: center; padding: 4rem 0; border-top: 1px solid var(--border-color); }
+        .footer .container p { font-size: 1.4rem; }
+
+        /* Animation */
+        [data-animate] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        [data-animate].visible { opacity: 1; transform: translateY(0); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 55%; cursor: auto; }
+            body { cursor: auto; }
+            .cursor-dot, .cursor-circle { display: none; }
+            .hero h1 { font-size: 4rem; }
+            .header .logo { display: none; }
+            .header .container { justify-content: center; }
+        }
+    </style>
+</head>
+<body class="loading">
+
+    <div class="preloader"><div class="spinner"></div></div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle"></div>
+
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">Pavithra B.</a>
+            <a href="mailto:pavithra.buchupalli.200525@gmail.com" class="btn">Get in Touch</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero" id="about">
+            <img src="Pavitra.webp" alt="Buchupalli Gangapavithra" class="profile-img" data-animate>
+            <h1 class="animated-heading">Buchupalli Gangapavithra</h1>
+            <h2 class="subtitle" data-animate style="transition-delay: 100ms;">Deep Learning & Computer Vision Engineer</h2>
+            <p class="summary" data-animate style="transition-delay: 200ms;">
+                Enthusiastic B.Tech graduate with a strong foundation in deep learning and real-time object detection. Experienced in building intelligent systems with Python, YOLOv8, and TensorFlow to solve practical challenges.
+            </p>
+            <div class="social-links" data-animate style="transition-delay: 300ms;">
+                <a href="https://www.linkedin.com/in/pavithra-buchupalli-2ba0772b" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/pavithrabuchupalli" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://drive.google.com/file/d/1dvXEr5wjG3mYDOYPtpXNd-1-CE66yozU/view?usp=drivesdk" target="_blank" aria-label="View Resume"><i class="fas fa-file-alt"></i></a>
+            </div>
+        </section>
+
+        <section class="section" id="skills">
+            <h2 class="section-title" data-animate>Skills</h2>
+            <div class="skills-grid">
+                <div class="card" data-animate><h3>Core Competencies</h3><ul><li>Deep Learning</li><li>Computer Vision</li><li>Object Detection (YOLOv8)</li><li>TensorFlow</li></ul></div>
+                <div class="card" data-animate style="transition-delay: 100ms;"><h3>Programming</h3><ul><li>Python</li><li>HTML & CSS</li><li>SQL Queries</li></ul></div>
+                <div class="card" data-animate style="transition-delay: 200ms;"><h3>Soft Skills</h3><ul><li>Communication</li><li>Problem-Solving</li><li>Teamwork</li><li>Adaptability</li></ul></div>
+            </div>
+        </section>
+
+        <section class="section" id="projects">
+            <h2 class="section-title" data-animate>Academic Projects</h2>
+            <div class="project-list">
+                <div class="card project-card" data-animate>
+                    <h3>Waste Classification Using Deep Learning</h3>
+                    <p>A deep learning model designed to improve waste management by automatically classifying items into plastic, metal, and food categories.</p>
+                    <ul><li>Developed a model to recognize visual features of waste from image data.</li><li>Improved waste sorting efficiency through automated classification.</li></ul>
+                </div>
+                <div class="card project-card" data-animate style="transition-delay: 100ms;">
+                    <h3>Real-Time Object Detection and Tracking using YOLOv8</h3>
+                    <p>A project focused on real-time object detection and tracking in video streams, where I led a team of three members.</p>
+                    <ul><li>Prepared and preprocessed diverse datasets for robust YOLOv8 training.</li><li>Trained and optimized the YOLOv8 model for accurate, high-performance object detection.</li></ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="education-certs">
+            <h2 class="section-title" data-animate>Education & Certifications</h2>
+            <div class="grid-layout">
+                <div class="list-card card" data-animate>
+                    <h3>Education</h3>
+                    <div class="item"><p class="item-title">B.Tech, Computer Science Engineering</p><p class="item-subtitle">VELTECH UNIVERSITY, CHENNAI (2022 - 2026)</p></div>
+                    <div class="item"><p class="item-title">12th Grade (MPC Stream)</p><p class="item-subtitle">SRI CHAITANYA JUNIOR COLLEGE, TIRUPATI (2020 - 2022)</p></div>
+                    <div class="item"><p class="item-title">10th Grade</p><p class="item-subtitle">SRI CHAITANYA TECHNO SCHOOL, PULIVENDULA (2019 - 2020)</p></div>
+                </div>
+                <div class="list-card card" data-animate style="transition-delay: 100ms;">
+                    <h3>Certifications</h3>
+                    <div class="item"><p class="item-title">Machine Learning for Soil and Crop Management</p><p class="item-subtitle">NPTEL (IIT) | Elite Certificate</p></div>
+                    <div class="item"><p class="item-title">Introduction to Industry 4.0 and IIoT</p><p class="item-subtitle">NPTEL (IIT)</p></div>
+                    <div class="item"><p class="item-title">Computer Networks and Cyber Security</p><p class="item-subtitle">CISCO (CCNA)</p></div>
+                    <div class="item"><p class="item-title">Software Engineering</p><p class="item-subtitle">Infosys Springboard</p></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container"><p>© 2024 Buchupalli Gangapavithra. All Rights Reserved.</p></div>
+    </footer>
+
+    <!-- INLINE JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /**
+             * Handles the preloader fade-out effect.
+             */
+            function initPreloader() {
+                const preloader = document.querySelector('.preloader');
+                window.addEventListener('load', () => {
+                    document.body.classList.remove('loading');
+                    preloader.style.opacity = '0';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        initTextAnimations(); // Start text animation after preloader is gone
+                    }, 500);
+                });
+            }
+
+            /**
+             * Initializes a custom cursor that follows the mouse.
+             */
+            function initCustomCursor() {
+                if (window.matchMedia("(pointer: coarse)").matches) return; // Abort on touch devices
+
+                const cursorDot = document.querySelector('.cursor-dot');
+                const cursorCircle = document.querySelector('.cursor-circle');
+                let mouseX = 0, mouseY = 0, circleX = 0, circleY = 0;
+
+                window.addEventListener('mousemove', () => {
+                    cursorDot.style.opacity = '1';
+                    cursorCircle.style.opacity = '1';
+                }, { once: true });
+
+                window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+                function tick() {
+                    cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+                    let dx = mouseX - circleX, dy = mouseY - circleY;
+                    circleX += dx * 0.2; circleY += dy * 0.2;
+                    cursorCircle.style.transform = `translate(${circleX}px, ${circleY}px)`;
+                    requestAnimationFrame(tick);
+                }
+                tick();
+
+                const hoverElements = 'a, button, .card, .profile-img';
+                document.querySelectorAll(hoverElements).forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hovered'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hovered'));
+                });
+            }
+            
+            /**
+             * Animates text by splitting it into characters and staggering their appearance.
+             */
+            function initTextAnimations() {
+                const animatedHeading = document.querySelector('.animated-heading');
+                if (animatedHeading) {
+                    const text = animatedHeading.textContent;
+                    animatedHeading.innerHTML = '';
+                    text.split('').forEach((char, index) => {
+                        const span = document.createElement('span');
+                        span.className = 'char';
+                        span.textContent = char === ' ' ? '\u00A0' : char;
+                        span.style.transitionDelay = `${index * 30}ms`;
+                        animatedHeading.appendChild(span);
+                    });
+
+                    // Trigger the animation by adding a class after a short delay
+                    setTimeout(() => {
+                        animatedHeading.querySelectorAll('.char').forEach(span => {
+                            span.style.opacity = '1';
+                            span.style.transform = 'translateY(0)';
+                        });
+                    }, 100);
+                }
+            }
+
+            /**
+             * Initializes Intersection Observer for scroll-triggered animations.
+             */
+            function initScrollAnimations() {
+                const header = document.querySelector('.header');
+                window.addEventListener('scroll', () => {
+                    header.classList.toggle('scrolled', window.scrollY > 50);
+                });
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+                document.querySelectorAll('[data-animate]').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+
+            // === Initialize all features ===
+            initPreloader();
+            initCustomCursor();
+            initScrollAnimations();
+            // Note: initTextAnimations() is called by the preloader now.
+        });
+    </script>
+</body>
+</html>
